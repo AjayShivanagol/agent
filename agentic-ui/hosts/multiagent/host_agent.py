@@ -393,6 +393,17 @@ Current agent: {current_agent['active_agent']}
                 feedback='Agent Judge unavailable. Response not validated.',
             )
 
+        if self._evaluation_indicates_judge_unavailable(
+            evaluation_parts, judge_name
+        ):
+            self.logger.warning(
+                'Agent Judge returned an error payload; skipping validation.'
+            )
+            return ValidationResult(
+                True,
+                feedback='Agent Judge unavailable. Response not validated.',
+            )
+
         evaluation_text = self._extract_text_from_parts(evaluation_parts)
         if not evaluation_text:
             self.logger.warning('Agent Judge returned no evaluation content.')
@@ -464,6 +475,21 @@ Current agent: {current_agent['active_agent']}
         return ValidationResult(
             result == 'PASS', feedback=feedback, raw_text=evaluation_text, confidence=confidence
         )
+
+    @staticmethod
+    def _evaluation_indicates_judge_unavailable(
+        evaluation_parts: list[Any], judge_name: str
+    ) -> bool:
+        """Detect Judge availability issues from structured error payloads."""
+
+        if not evaluation_parts:
+            return False
+
+        error_prefix = f'Agent {judge_name} returned an error:'
+        for part in evaluation_parts:
+            if isinstance(part, str) and error_prefix in part:
+                return True
+        return False
 
     def _build_retry_message(
         self,

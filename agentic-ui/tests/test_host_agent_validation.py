@@ -78,6 +78,18 @@ class HostAgentValidationTest(unittest.TestCase):
         self.assertEqual(result.confidence, 4)
         self.assertEqual(result.feedback, 'Double-check costs')
 
+    def test_evaluation_indicates_judge_unavailable(self):
+        parts = ['Agent Agent Judge returned an error: HTTP Error 503']
+        self.assertTrue(
+            HostAgent._evaluation_indicates_judge_unavailable(parts, 'Agent Judge')
+        )
+
+        self.assertFalse(
+            HostAgent._evaluation_indicates_judge_unavailable(
+                ['✅ Agent Judge validated this response.'], 'Agent Judge'
+            )
+        )
+
 
 if __name__ == '__main__':
     unittest.main()
