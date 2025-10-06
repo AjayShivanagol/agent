@@ -705,18 +705,31 @@ class AgentJudge:
         Expects input in format: "USER_QUERY|||AGENT_RESPONSE"
         """
         try:
-            # Parse input format
+            # Parse input format. Accept both the canonical delimiter format and
+            # a human readable "query: ... response: ..." variant commonly used
+            # from the UI for quick spot checks.
+            user_query = agent_response = None
             if "|||" in user_input:
                 parts = user_input.split("|||", 1)
                 user_query = parts[0].strip()
                 agent_response = parts[1].strip()
             else:
+                match = re.search(
+                    r"query\s*:\s*(?P<query>.+?)\s*response\s*:\s*(?P<response>.+)",
+                    user_input,
+                    flags=re.IGNORECASE | re.DOTALL,
+                )
+                if match:
+                    user_query = match.group("query").strip()
+                    agent_response = match.group("response").strip()
+
+            if not user_query or not agent_response:
                 return {
                     'is_task_complete': True,
                     'require_user_input': False,
                     'content': 'Invalid input format. Please use: USER_QUERY|||AGENT_RESPONSE'
                 }
-            
+
             # Evaluate using G-EVAL methodology
             evaluation = self.evaluate(user_query, agent_response)
             
