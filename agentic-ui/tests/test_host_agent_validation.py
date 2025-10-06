@@ -48,6 +48,23 @@ from hosts.multiagent.host_agent import HostAgent
 class HostAgentValidationTest(unittest.TestCase):
     """Unit tests for HostAgent validation parsing helpers."""
 
+    def setUp(self):
+        self._env_backup = {
+            key: os.environ.get(key)
+            for key in (
+                'HOST_AGENT_REMOTE_URLS',
+                'CSC_AGENT_URL',
+                'AGENT_JUDGE_URL',
+            )
+        }
+
+    def tearDown(self):
+        for key, value in self._env_backup.items():
+            if value is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = value
+
     def test_parse_validation_response_pass(self):
         evaluation = (
             "## EVALUATION RESULT: PASS\n"
@@ -88,6 +105,24 @@ class HostAgentValidationTest(unittest.TestCase):
             HostAgent._evaluation_indicates_judge_unavailable(
                 ['✅ Agent Judge validated this response.'], 'Agent Judge'
             )
+        )
+
+    def test_prepare_remote_agent_addresses_adds_defaults(self):
+        os.environ['CSC_AGENT_URL'] = 'http://csc.local'
+        os.environ['AGENT_JUDGE_URL'] = 'http://judge.local'
+        result = HostAgent._prepare_remote_agent_addresses(['http://csc.local'])
+        self.assertIn('http://csc.local', result)
+        self.assertIn('http://judge.local', result)
+        self.assertLessEqual(result.index('http://csc.local'), result.index('http://judge.local'))
+
+    def test_prepare_remote_agent_addresses_honors_env_list(self):
+        os.environ['HOST_AGENT_REMOTE_URLS'] = 'http://foo.local, http://bar.local'
+        os.environ['CSC_AGENT_URL'] = 'http://foo.local'
+        os.environ['AGENT_JUDGE_URL'] = 'http://judge.local'
+        result = HostAgent._prepare_remote_agent_addresses([])
+        self.assertEqual(
+            result,
+            ['http://foo.local', 'http://bar.local', 'http://judge.local'],
         )
 
 

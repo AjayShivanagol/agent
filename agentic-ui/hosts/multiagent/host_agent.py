@@ -53,7 +53,7 @@ class HostAgent:
 
     def __init__(
         self,
-        remote_agent_addresses: list[str],
+        remote_agent_addresses: list[str] | None,
         http_client: httpx.AsyncClient,
         task_callback: TaskUpdateCallback | None = None,
     ):
@@ -63,19 +63,48 @@ class HostAgent:
         self.remote_agent_connections: dict[str, RemoteAgentConnections] = {}
         self.cards: dict[str, AgentCard] = {}
         self.agents: str = ''
+        self._cards_ready = asyncio.Event()
+
+        prepared_addresses = self._prepare_remote_agent_addresses(
+            remote_agent_addresses
+        )
+        if prepared_addresses:
+            self.logger.info(
+                'Initializing remote agent addresses: %s', prepared_addresses
+            )
+        else:
+            self.logger.warning(
+                'No remote agent addresses configured; host agent will operate '
+                'without remote delegation.'
+            )
+
         self.max_validation_attempts = int(
             os.environ.get('AGENT_VALIDATION_MAX_ATTEMPTS', '5')
         )
         loop = asyncio.get_running_loop()
-        loop.create_task(self.init_remote_agent_addresses(remote_agent_addresses))
+        if prepared_addresses:
+            loop.create_task(self.init_remote_agent_addresses(prepared_addresses))
+        else:
+            self._cards_ready.set()
 
     async def init_remote_agent_addresses(self, remote_agent_addresses: list[str]):
-        async with asyncio.TaskGroup() as task_group:
-            for address in remote_agent_addresses:
-                task_group.create_task(self.retrieve_card(address))
+        try:
+            async with asyncio.TaskGroup() as task_group:
+                for address in remote_agent_addresses:
+                    task_group.create_task(self._safe_retrieve_card(address))
+        finally:
+            self._cards_ready.set()
         # The task groups run in the background and complete.
         # Once completed the self.agents string is set and the remote
         # connections are established.
+
+    async def _safe_retrieve_card(self, address: str):
+        try:
+            await self.retrieve_card(address)
+        except Exception as exc:  # pragma: no cover - log unexpected network errors
+            self.logger.error(
+                'Failed to retrieve agent card from %s: %s', address, exc
+            )
 
     async def retrieve_card(self, address: str):
         card_resolver = A2ACardResolver(self.httpx_client, address)
@@ -168,6 +197,8 @@ Current agent: {current_agent['active_agent']}
         self, agent_name: str, message: str, tool_context: ToolContext
     ):
         """Send a message to a remote agent with Agent Judge validation."""
+
+        await self._cards_ready.wait()
 
         if agent_name not in self.remote_agent_connections:
             raise ValueError(f'Agent {agent_name} not found')
@@ -512,6 +543,39 @@ Current agent: {current_agent['active_agent']}
             f"Previous response for reference:\n{trimmed_response}\n\n"
             "Please provide an improved, accurate, and complete answer that addresses the feedback above."
         )
+
+
+    @staticmethod
+    def _prepare_remote_agent_addresses(
+        remote_agent_addresses: list[str] | None,
+    ) -> list[str]:
+        """Return a normalized list of remote agent URLs with sensible defaults."""
+
+        normalized: list[str] = []
+
+        def add(url: str | None):
+            if not url:
+                return
+            cleaned = url.strip()
+            if cleaned and cleaned not in normalized:
+                normalized.append(cleaned)
+
+        for url in remote_agent_addresses or []:
+            add(url)
+
+        env_urls = os.environ.get('HOST_AGENT_REMOTE_URLS', '')
+        if env_urls:
+            for url in env_urls.split(','):
+                add(url)
+
+        default_urls = [
+            os.environ.get('CSC_AGENT_URL', 'http://localhost:10000'),
+            os.environ.get('AGENT_JUDGE_URL', 'http://localhost:10001'),
+        ]
+        for url in default_urls:
+            add(url)
+
+        return normalized
 
 
 async def convert_parts(parts: list[Part], tool_context: ToolContext):
