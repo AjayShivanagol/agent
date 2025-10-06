@@ -292,6 +292,7 @@ Current agent: {current_agent['active_agent']}
         *,
         update_state: bool,
         context_override: str | None = None,
+        forward_events: bool = False,
     ) -> list[Any]:
         """Send a request to a remote agent and normalize the response."""
 
@@ -307,6 +308,10 @@ Current agent: {current_agent['active_agent']}
         if update_state:
             state['message_id'] = message_id
 
+        callback = None
+        if self.task_callback and (update_state or forward_events):
+            callback = self.task_callback
+
         request = MessageSendParams(
             id=str(uuid.uuid4()),
             message=Message(
@@ -321,9 +326,7 @@ Current agent: {current_agent['active_agent']}
             ),
         )
 
-        response = await client.send_message(
-            request, self.task_callback if update_state else None
-        )
+        response = await client.send_message(request, callback)
 
         if isinstance(response, JSONRPCError):
             error_message = response.message or 'Unknown error from remote agent'
@@ -408,14 +411,15 @@ Current agent: {current_agent['active_agent']}
         """Send the response to the Agent Judge for validation."""
 
         evaluation_input = f'{user_query}|||{agent_response}'
-        context_id = tool_context.state.get('context_id', 'default')
+        context_id = tool_context.state.get('context_id') or 'default'
         try:
             evaluation_parts = await self._dispatch_to_remote_agent(
                 judge_name,
                 evaluation_input,
                 tool_context,
                 update_state=False,
-                context_override=f'{context_id}_judge',
+                context_override=context_id,
+                forward_events=True,
             )
         except Exception as exc:
             self.logger.error('Agent Judge evaluation failed: %s', exc)
