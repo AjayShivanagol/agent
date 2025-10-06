@@ -76,6 +76,7 @@ class TestAgentJudge:
             "User query: What is 2+2? Answer: It equals 4.",
             "query: What is 2+2? reposnse: It equals 4.",
             "prompt: What is 2+2? reply: It equals 4.",
+            "Evaluate the following: query: \"what is 2+2 ?\", response: \"6\"",
         ],
     )
     def test_get_agent_response_query_response_format(self, labelled_input):

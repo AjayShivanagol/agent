@@ -715,16 +715,36 @@ class AgentJudge:
             left, right = payload.split("|||", 1)
             return left.strip() or None, right.strip() or None
 
-        labelled_patterns = [
-            r"(?:(?:user\s*)?query|question|prompt)\s*[:\-]\s*(?P<query>.+?)\s*(?:agent\s*)?(?:re\w+|ans\w+|reply|output)\s*[:\-]\s*(?P<response>.+)",
-            r"(?P<query>.+?)\s*(?:agent\s*)?(?:re\w+|ans\w+|reply|output)\s*[:\-]\s*(?P<response>.+)",
-        ]
+        def _strip_wrapping_quotes(text: str) -> str:
+            if len(text) >= 2 and text[0] == text[-1] and text[0] in {'"', "'"}:
+                return text[1:-1]
+            return text
 
-        for pattern in labelled_patterns:
-            match = re.search(pattern, payload, flags=re.IGNORECASE | re.DOTALL)
-            if match:
-                query_text = match.group("query").strip(" \n\r\t-:")
-                response_text = match.group("response").strip()
+        query_label_pattern = re.compile(
+            r"(?:(?:user\s*)?query|question|prompt)\s*[:\-]",
+            flags=re.IGNORECASE,
+        )
+        response_label_pattern = re.compile(
+            r"(?:agent\s*)?(?:re\w+|ans\w+|reply|output|result)\s*[:\-]",
+            flags=re.IGNORECASE,
+        )
+
+        query_label_match = query_label_pattern.search(payload)
+        if query_label_match:
+            response_label_match = response_label_pattern.search(
+                payload, query_label_match.end()
+            )
+            if response_label_match:
+                query_text = payload[
+                    query_label_match.end() : response_label_match.start()
+                ]
+                response_text = payload[response_label_match.end() :]
+
+                query_text = _strip_wrapping_quotes(query_text.strip().rstrip(",;"))
+                response_text = _strip_wrapping_quotes(
+                    response_text.strip().lstrip(",;-")
+                )
+
                 if query_text and response_text:
                     return query_text, response_text
 
@@ -737,9 +757,14 @@ class AgentJudge:
                 remainder = parts[1]
                 colon_index = remainder.rfind(":")
                 if colon_index != -1:
-                    query_candidate = remainder[:colon_index].strip()
+                    query_candidate = remainder[:colon_index].strip().rstrip(",;")
                     response_candidate = remainder[colon_index + 1 :].strip()
-                    query_candidate = re.sub(r"[\s\-]*$", "", query_candidate)
+                    query_candidate = _strip_wrapping_quotes(
+                        re.sub(r"[\s\-]*$", "", query_candidate)
+                    )
+                    response_candidate = _strip_wrapping_quotes(
+                        response_candidate.lstrip(",;-")
+                    )
                     if query_candidate and response_candidate:
                         return query_candidate, response_candidate
 
