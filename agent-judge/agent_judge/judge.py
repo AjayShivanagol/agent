@@ -699,29 +699,59 @@ class AgentJudge:
                 recommendations="Please retry with proper agent setup"
             )
     
+    def _extract_query_and_response(
+        self, user_input: str
+    ) -> tuple[Optional[str], Optional[str]]:
+        """Return the query/response pair from supported input variants."""
+
+        if not user_input:
+            return None, None
+
+        payload = user_input.strip()
+        if not payload:
+            return None, None
+
+        if "|||" in payload:
+            left, right = payload.split("|||", 1)
+            return left.strip() or None, right.strip() or None
+
+        labelled_patterns = [
+            r"(?:(?:user\s*)?query|question|prompt)\s*[:\-]\s*(?P<query>.+?)\s*(?:agent\s*)?(?:re\w+|ans\w+|reply|output)\s*[:\-]\s*(?P<response>.+)",
+            r"(?P<query>.+?)\s*(?:agent\s*)?(?:re\w+|ans\w+|reply|output)\s*[:\-]\s*(?P<response>.+)",
+        ]
+
+        for pattern in labelled_patterns:
+            match = re.search(pattern, payload, flags=re.IGNORECASE | re.DOTALL)
+            if match:
+                query_text = match.group("query").strip(" \n\r\t-:")
+                response_text = match.group("response").strip()
+                if query_text and response_text:
+                    return query_text, response_text
+
+        # Fallback: if we spot a "query" label but the response label is misspelled,
+        # try splitting on the final colon and treat everything before it as the
+        # query section.
+        if re.search(r"query\s*[:\-]", payload, flags=re.IGNORECASE):
+            parts = re.split(r"query\s*[:\-]\s*", payload, maxsplit=1, flags=re.IGNORECASE)
+            if len(parts) == 2:
+                remainder = parts[1]
+                colon_index = remainder.rfind(":")
+                if colon_index != -1:
+                    query_candidate = remainder[:colon_index].strip()
+                    response_candidate = remainder[colon_index + 1 :].strip()
+                    query_candidate = re.sub(r"[\s\-]*$", "", query_candidate)
+                    if query_candidate and response_candidate:
+                        return query_candidate, response_candidate
+
+        return None, None
+
     def get_agent_response(self, user_input: str, conversation_id: str = "default") -> Dict[str, Any]:
         """
         Main interface method for A2A integration using G-EVAL methodology.
         Expects input in format: "USER_QUERY|||AGENT_RESPONSE"
         """
         try:
-            # Parse input format. Accept both the canonical delimiter format and
-            # a human readable "query: ... response: ..." variant commonly used
-            # from the UI for quick spot checks.
-            user_query = agent_response = None
-            if "|||" in user_input:
-                parts = user_input.split("|||", 1)
-                user_query = parts[0].strip()
-                agent_response = parts[1].strip()
-            else:
-                match = re.search(
-                    r"query\s*:\s*(?P<query>.+?)\s*response\s*:\s*(?P<response>.+)",
-                    user_input,
-                    flags=re.IGNORECASE | re.DOTALL,
-                )
-                if match:
-                    user_query = match.group("query").strip()
-                    agent_response = match.group("response").strip()
+            user_query, agent_response = self._extract_query_and_response(user_input)
 
             if not user_query or not agent_response:
                 return {

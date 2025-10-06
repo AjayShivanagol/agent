@@ -68,9 +68,18 @@ class TestAgentJudge:
         assert 'content' in result
         assert isinstance(result['content'], str)
 
-    def test_get_agent_response_query_response_format(self):
+    @pytest.mark.parametrize(
+        "labelled_input",
+        [
+            "query: What is 2+2? response: It equals 4.",
+            "Question - What is 2+2? Agent response - It equals 4.",
+            "User query: What is 2+2? Answer: It equals 4.",
+            "query: What is 2+2? reposnse: It equals 4.",
+            "prompt: What is 2+2? reply: It equals 4.",
+        ],
+    )
+    def test_get_agent_response_query_response_format(self, labelled_input):
         """Test agent response method with query/response labelled input."""
-        labelled_input = "query: What is 2+2? response: It equals 4."
 
         result = self.judge.get_agent_response(labelled_input)
 
