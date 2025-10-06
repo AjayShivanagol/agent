@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "mssql": {
+      "command": "node",
+      "args": ["./SQL-AI-samples/MssqlMcp/Node/dist/index.js"],
+      "env": {
+        "MSSQL_SERVER": "sqlserverfcos.database.windows.net",
+        "MSSQL_DATABASE": "fcosdb1",
+        "MSSQL_USER": "${AZURE_CLIENT_ID}",
+        "MSSQL_PASSWORD": "${AZURE_CLIENT_SECRET}",
+        "MSSQL_ENCRYPT": "true"
+      }
+    }
+  }
+}

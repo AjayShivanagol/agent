@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "helm.fullname" . }}
+  labels:
+    {{- include "helm.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "helm.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+        vault.hashicorp.com/agent-inject: '{{ .Values.vaultInjector.enable }}'
+        vault.hashicorp.com/agent-inject-secret-envvar: {{ .Values.vaultInjector.path }}
+        vault.hashicorp.com/auth-path: {{ .Values.vaultInjector.authpath }}
+        vault.hashicorp.com/namespace: {{ .Values.vaultInjector.namespace }}       
+        vault.hashicorp.com/agent-inject-template-envvar: |
+          {{`{{- with secret `}}"{{ .Values.vaultInjector.path }}"{{` -}}
+          {{- range $k, $v := .Data.data }}
+          {{ $k }}={{ $v }}
+          {{- end }}
+          {{- end }}`}}   
+      labels:
+        {{- include "helm.selectorLabels" . | nindent 8 }}
+        helm-revision: "{{ .Release.Revision }}"
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "helm.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.envs }}
+          env:
+          {{- toYaml . | nindent 12 }}
+          {{- end }} 
+          ports:
+            - name: http
+              containerPort: {{ .Values.containerPort }}
+              protocol: TCP
+          {{- if .Values.persistence.enabled }}
+          volumeMounts:
+            - name: data-storage
+              mountPath: {{ .Values.persistence.mountPath }}
+          {{- end }}            
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- if .Values.persistence.enabled }}
+      volumes:
+        - name: data-storage
+          persistentVolumeClaim:
+            claimName: {{ include "helm.fullname" . }}-pvc
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

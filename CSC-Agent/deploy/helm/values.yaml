@@ -1,0 +1,128 @@
+# Default values for helm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: nginx
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+namespace: codespaces-apps
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+envs:
+  # - name: DB_URL
+  #   value: ""
+
+  - name: HTTP_PROXY
+    value: http://security-proxy.emea.svc.corpintra.net:3128/
+  - name: NO_PROXY
+    value: >-
+      0.0.0.0,localhost,127.0.0.1,53.0.0.0/8,10.0.0.0/8,192.168.0.0/16,corpshared.net,corpintra.net,cluster.local,git.daimler.com,login.daimler.com,sso.daimler.com,matter.i.mercedes-benz.com,git.i.mercedes-benz.com,artifacts.i.mercedes-benz.com
+  - name: HTTPS_PROXY
+    value: http://security-proxy.emea.svc.corpintra.net:3128/
+  - name: http_proxy
+    value: http://security-proxy.emea.svc.corpintra.net:3128/
+  - name: no_proxy
+    value: >-
+      0.0.0.0,localhost,127.0.0.1,53.0.0.0/8,10.0.0.0/8,192.168.0.0/16,corpshared.net,corpintra.net,cluster.local,git.daimler.com,login.daimler.com,sso.daimler.com,matter.i.mercedes-benz.com,git.i.mercedes-benz.com,artifacts.i.mercedes-benz.com
+  - name: https_proxy
+    value: http://security-proxy.emea.svc.corpintra.net:3128/
+  - name: ftp_proxy
+    value: http://security-proxy.emea.svc.corpintra.net:3128/
+  - name: FTP_PROXY
+    value: http://security-proxy.emea.svc.corpintra.net:3128/
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations:
+  vault.hashicorp.com/role: dna
+  vault.hashicorp.com/tls-skip-verify: 'true'
+  vault.hashicorp.com/agent-pre-populate-only: 'true'
+vaultInjector:
+  enable: false
+  path: kv/codespaces/dummy
+  namespace: fmas/staging
+  authpath: auth/kubernetes
+  root_path: /wsid/target_env/api
+
+podSecurityContext: 
+  runAsUser: 1000
+  fsGroup: 1000
+
+
+securityContext: 
+  runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+containerPort: 10000
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+  
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+networkPolicy:
+  ingressRules:
+    - ports:
+        - protocol: TCP
+          port: 10000  
+
+## HA Section
+# Autoscaling and PDB will help you keep highly avaiable for our app
+##
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+podDisruptionBudget:
+  enabled: false
+  #Important: Uncomment only one of the following when enabled is set to true and minimum replica and autoscaling.minReplicas is two
+  maxUnavailable: "50%"
+  # minAvailable: "50%"

@@ -1,0 +1,6 @@
+.env
+pyproject-working.toml
+poetry-installer-error-rdtle2ky.log
+venv
+.env
+*.pyc

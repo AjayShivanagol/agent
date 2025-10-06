@@ -1,0 +1,404 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "接口文档",
+    "version": "1.0",
+    "title": "swagger-api文档"
+  },
+  "host": "code-spaces.dna-prod.app.corpintra.net",
+  "basePath": "/fc-onepc-csc-backend-azuresql/int/",
+  "schemes": [],
+  "consumes": [
+    "*/*"
+  ],
+  "produces": [
+    "*/*"
+  ],
+  "paths": {
+    "/integration_layer/resultview/itemView/queryItemAll": {
+      "post": {
+        "tags": [
+          "CostingResultView接口"
+        ],
+        "summary": "itemView-queryItemAll",
+        "description": "itemView查询ItemAll接口，入参parentKey",
+        "operationId": "queryItemViewItemAllUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ItemViewPageRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Result«PageResult«List«CoCostingItemView»»»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "definitions": {
+    "ItemViewPageRequest": {
+      "type": "object",
+      "properties": {
+        "curPage": {
+          "type": "integer",
+          "format": "int32",
+          "refType": null
+        },
+        "currencyTypeCode": {
+          "type": "string",
+          "refType": null
+        },
+        "level": {
+          "type": "string",
+          "refType": null
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int32",
+          "refType": null
+        },
+        "offset": {
+          "type": "integer",
+          "format": "int32",
+          "refType": null
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32",
+          "refType": null
+        },
+        "parentKey": {
+          "type": "string",
+          "refType": null
+        },
+        "reportType": {
+          "type": "string",
+          "refType": null
+        },
+        "selectionId": {
+          "type": "string",
+          "refType": null
+        },
+        "type": {
+          "type": "string",
+          "refType": null
+        },
+        "user": {
+          "type": "string",
+          "refType": null
+        }
+      },
+      "title": "ItemViewPageRequest"
+    },
+    "Result«PageResult«List«CoCostingItemView»»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "$ref": "#/definitions/PageResult«List«CoCostingItemView»»"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "Result«PageResult«List«CoCostingItemView»»»"
+    },
+    "PageResult«List«CoCostingItemView»»": {
+      "type": "object",
+      "properties": {
+        "curPage": {
+          "type": "integer",
+          "format": "int32",
+          "refType": null
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CoCostingItemView"
+          },
+          "refType": "CoCostingItemView"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32",
+          "refType": null
+        },
+        "totalCount": {
+          "type": "integer",
+          "format": "int32",
+          "refType": null
+        }
+      },
+      "title": "PageResult«List«CoCostingItemView»»"
+    },
+    "CoCostingItemView": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "refType": null
+        },
+        "activityType": {
+          "type": "string",
+          "refType": null
+        },
+        "additiveCost": {
+          "type": "string",
+          "refType": null
+        },
+        "baseUnit": {
+          "type": "string",
+          "refType": null
+        },
+        "businessArea": {
+          "type": "string",
+          "refType": null
+        },
+        "componentId": {
+          "type": "string",
+          "refType": null
+        },
+        "controlKey": {
+          "type": "string",
+          "refType": null
+        },
+        "costCenter": {
+          "type": "string",
+          "refType": null
+        },
+        "costComp": {
+          "type": "string",
+          "refType": null
+        },
+        "costElement": {
+          "type": "string",
+          "refType": null
+        },
+        "costEstNo": {
+          "type": "string",
+          "refType": null
+        },
+        "costingDate": {
+          "type": "string",
+          "refType": null
+        },
+        "costingType": {
+          "type": "string",
+          "refType": null
+        },
+        "costingVersion": {
+          "type": "string",
+          "refType": null
+        },
+        "currency": {
+          "type": "string",
+          "refType": null
+        },
+        "currencyTypeCode": {
+          "type": "string",
+          "refType": null
+        },
+        "errMsg": {
+          "type": "string",
+          "refType": null
+        },
+        "fixValue": {
+          "type": "number",
+          "refType": null
+        },
+        "fixedValue": {
+          "type": "number",
+          "refType": null
+        },
+        "itemCategory": {
+          "type": "string",
+          "refType": null
+        },
+        "itemNo": {
+          "type": "string",
+          "refType": null
+        },
+        "ledger": {
+          "type": "string",
+          "refType": null
+        },
+        "material": {
+          "type": "string",
+          "refType": null
+        },
+        "materialCompositeKey": {
+          "type": "string",
+          "refType": null
+        },
+        "materialDesc": {
+          "type": "string",
+          "refType": null
+        },
+        "materialSpecProcTypeCosting": {
+          "type": "string",
+          "refType": null
+        },
+        "mixedCosting": {
+          "type": "string",
+          "refType": null
+        },
+        "mixingRatio": {
+          "type": "number",
+          "refType": null
+        },
+        "operation": {
+          "type": "string",
+          "refType": null
+        },
+        "parentMaterial": {
+          "type": "string",
+          "refType": null
+        },
+        "parentMaterialCompositeKey": {
+          "type": "string",
+          "refType": null
+        },
+        "parentMaterialSpecProcTypeCosting": {
+          "type": "string",
+          "refType": null
+        },
+        "parentPlant": {
+          "type": "string",
+          "refType": null
+        },
+        "plant": {
+          "type": "string",
+          "refType": null
+        },
+        "price": {
+          "type": "number",
+          "refType": null
+        },
+        "priceUnit": {
+          "type": "number",
+          "refType": null
+        },
+        "processCategory": {
+          "type": "string",
+          "refType": null
+        },
+        "procurementAlternative": {
+          "type": "string",
+          "refType": null
+        },
+        "profitCenter": {
+          "type": "string",
+          "refType": null
+        },
+        "purcDocNum": {
+          "type": "string",
+          "refType": null
+        },
+        "purcItemNo": {
+          "type": "string",
+          "refType": null
+        },
+        "quantity": {
+          "type": "number",
+          "refType": null
+        },
+        "referenceObject": {
+          "type": "string",
+          "refType": null
+        },
+        "selectionIdType": {
+          "type": "string",
+          "refType": null
+        },
+        "srcSys": {
+          "type": "string",
+          "refType": null
+        },
+        "supplier": {
+          "type": "string",
+          "refType": null
+        },
+        "totalValue": {
+          "type": "number",
+          "refType": null
+        },
+        "tranSelectionId": {
+          "type": "string",
+          "refType": null
+        },
+        "transfCostEstNo": {
+          "type": "string",
+          "refType": null
+        },
+        "transfCostingDate": {
+          "type": "string",
+          "refType": null
+        },
+        "transfCostingType": {
+          "type": "string",
+          "refType": null
+        },
+        "transfCostingVersion": {
+          "type": "string",
+          "refType": null
+        },
+        "transfValuationVariant": {
+          "type": "string",
+          "refType": null
+        },
+        "transferStrategy": {
+          "type": "string",
+          "refType": null
+        },
+        "valuationStrategy": {
+          "type": "string",
+          "refType": null
+        },
+        "valuationVariant": {
+          "type": "string",
+          "refType": null
+        },
+        "workCenter": {
+          "type": "string",
+          "refType": null
+        }
+      },
+      "title": "CoCostingItemView"
+    }
+  }
+}

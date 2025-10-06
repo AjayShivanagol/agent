@@ -1,0 +1,348 @@
+[
+  {
+    "conversation_id": "27576c6d-7622-48d2-9c53-707bcec73546",
+    "is_active": true,
+    "name": "",
+    "task_ids": [],
+    "messages": [
+      {
+        "contextId": "27576c6d-7622-48d2-9c53-707bcec73546",
+        "extensions": null,
+        "kind": "message",
+        "messageId": "06b84f33-6aa9-4456-817d-5335d2f7e9d1",
+        "metadata": null,
+        "parts": [
+          {
+            "kind": "text",
+            "metadata": null,
+            "text": "Provide me the list of materials in plant 3010."
+          }
+        ],
+        "referenceTaskIds": null,
+        "role": "user",
+        "taskId": null
+      },
+      {
+        "contextId": "27576c6d-7622-48d2-9c53-707bcec73546",
+        "extensions": null,
+        "kind": "message",
+        "messageId": "a7d725df-e9f1-4dee-bfe8-9360216c06f2",
+        "metadata": null,
+        "parts": [
+          {
+            "kind": "text",
+            "metadata": null,
+            "text": "Here is the list of materials in plant 3010 from the CSC Agent:\n\n| Material Number | MKP Component | End Number | Description |\n|---|---|---|---|\n| A0000000000 3000 | NULL | NULL | Testing Kaufteil Bewkl 3000 |\n| A0000000000 3001 | NULL | NULL | Testing Kaufteil Bewkl 3001 |\n| A0000000000 0400 | NULL | NULL | Testing WLT 040 |\n| A0000000072 2680 | NULL | NULL | AO AU.SCHWINGTUER |\n| A0000000072 2980 | NULL | NULL | AO AU.SCHWINGTUER |\n| A0000016600 | NULL | 00 | LIZENZ NAVI.K.DAT ISR NTG5.5 |\n| A0000028300 | NULL | 00 | LIZENZ NAVI.K.DAT N.AMERIKA A-ENTRY NTG5 |\n| A0000071100 | NULL | 00 | LICENCE NAVIG.MAP-DATA ECE NTG7 AUGMENTE |\n| A0000100301 | 077 | 85 | FILLER CAP |\n| A0000100301 0064 | 077 | 85 | LU EINFUELLVERSCHLUSS |\n| A0000100551 0080 | NULL | 51 | NOZZLE HOLDER |\n| A0000101051 | NULL | 51 | NOZZLE HOLDER |\n| A0000101285 | 077 | 85 | FILLER CAP |\n| A0000101351 | NULL | NULL | INJECTORS, NOZZLE HOLDER COMBINATIONS WI |\n| A0000101385 | 077 | 85 | FILLER CAP |\n| A0000101385 0064 | 077 | 85 | LU EINFUELLVERSCHLUSS |\n| A0000101451 | NULL | NULL | INJECTORS, NOZZLE HOLDER COMBINATIONS WI |\n| A0000101485 | 068 | 85 | FILLER CAP |\n| A0000101551 | NULL | NULL | INJECTORS, NOZZLE HOLDER COMBINATIONS WI |\n| A0000101585 | 068 | 85 | FILLER CAP |\n| A0000101585 0064 | 077 | 85 | LU EINFUELLVERSCHLUSS |\n| A0000101651 | NULL | NULL | INJECTORS, NOZZLE HOLDER COMBINATIONS WI |\n| A0000101685 | 077 | 85 | FILLER CAP |\n| A0000101685 0064 | 077 | 85 | W06 |\n| A0000110000 | 068 | 71 | SCREW F CRNKSHFT BEAR CAP |\n| A0000110035 | 093 | NULL | SCREW PLUG |\n| A0000110100 | 068 | 71 | SCREW F CRNKSHFT BEAR CAP |\n| A0000110200 | 068 | 71 | SCREW F CRNKSHFT BEAR CAP |\n| A0000110300 | 068 | 70 | SCREW F CRANKCASE |\n| A0000110400 | 068 | 71 | SCREW F CRNKSHFT BEAR CAP |\n| A0000110500 | 077 | 03 | RETAINING PLATE |\n| A0000110700 | 077 | 03 | RETAINING PLATE |\n| A0000110800 | 077 | 03 | RETAINING PLATE |\n| A0000110871 | NULL | NULL | SCHRAUBE F KW-LAGERDECKEL |\n| A0000111000 | NULL | NULL | HALTEPLATTE |\n| A0000111200 | 068 | 70 | SCREW F CRANKCASE |\n| A0000111300 | 068 | 70 | SCREW F CRANKCASE |\n| A0000140033 | 035 | 33 | ABDECKUNG AUS KUNSTSTOFF |\n| A0000140071 | 093 | NULL | SCREW PLUGS SPECIAL TYPES |\n| A0000150000 | 095 | 06 | COVER WITH SEALING |\n| A0000150200 | 035 | 06 | COVER WITH SEALING |\n| A0000150300 | 095 | 06 | COVER WITH SEALING |\n| A0000150400 | 075 | 30 | COVER OIL DUCT |\n| A0000150500 | 075 | 30 | COVER OIL DUCT |\n| A0000150600 | 075 | 30 | COVER OIL DUCT |\n| A0000150700 | 075 | 30 | COVER OIL DUCT |\n| A0000150900 | 075 | 30 | COVER OIL DUCT |\n| A0000151000 | 075 | 30 | COVER OIL DUCT |\n| A0000151200 | 095 | 06 | COVER WITH SEALING |\n| A0000151500 | NULL | 30 | DECKEL OELKANAL |\n\nShowing page 1 with 50 rows. Say ‘next’ or provide a page number to continue."
+          }
+        ],
+        "referenceTaskIds": null,
+        "role": "agent",
+        "taskId": "d529544b-b02a-4e69-8112-5b3352d8f2df"
+      }
+    ]
+  },
+  {
+    "conversation_id": "7a3fb504-f6bb-4782-90aa-9122874d971a",
+    "is_active": true,
+    "name": "",
+    "task_ids": [],
+    "messages": [
+      {
+        "contextId": "7a3fb504-f6bb-4782-90aa-9122874d971a",
+        "extensions": null,
+        "kind": "message",
+        "messageId": "d742615f-131c-4b20-aad0-acca8d3ca32c",
+        "metadata": null,
+        "parts": [
+          {
+            "kind": "text",
+            "metadata": null,
+            "text": "Provide me the list of materials in plant 3010."
+          }
+        ],
+        "referenceTaskIds": null,
+        "role": "user",
+        "taskId": null
+      },
+      {
+        "contextId": "7a3fb504-f6bb-4782-90aa-9122874d971a",
+        "extensions": null,
+        "kind": "message",
+        "messageId": "48c9f279-a04d-4883-9338-92a5ac264cf7",
+        "metadata": null,
+        "parts": [
+          {
+            "kind": "text",
+            "metadata": null,
+            "text": "It seems the CSC Agent did not find any materials with \"3010\" as a material number. If you meant to search for materials within plant \"3010\", please confirm, and I will proceed with that search."
+          }
+        ],
+        "referenceTaskIds": null,
+        "role": "agent",
+        "taskId": "e3c9a783-5023-4a63-aea5-3bad7ba29298"
+      }
+    ]
+  },
+  {
+    "conversation_id": "4bd9bfbe-f1eb-4139-9263-a6f06e6e1a40",
+    "is_active": true,
+    "name": "",
+    "task_ids": [],
+    "messages": []
+  },
+  {
+    "conversation_id": "ba758dd8-e1fd-41e8-8364-5cbdd98e51ec",
+    "is_active": true,
+    "name": "",
+    "task_ids": [],
+    "messages": []
+  },
+  {
+    "conversation_id": "ebb12ae2-0ddb-49ad-973d-8bbf00105398",
+    "is_active": true,
+    "name": "",
+    "task_ids": [],
+    "messages": []
+  },
+  {
+    "conversation_id": "4ab8c26e-2e33-46c6-8130-eb1488c92116",
+    "is_active": true,
+    "name": "",
+    "task_ids": [],
+    "messages": [
+      {
+        "contextId": "4ab8c26e-2e33-46c6-8130-eb1488c92116",
+        "extensions": null,
+        "kind": "message",
+        "messageId": "17f21cc9-4ede-4216-ae1b-789371cb079d",
+        "metadata": null,
+        "parts": [
+          {
+            "kind": "text",
+            "metadata": null,
+            "text": "what is 2+7"
+          }
+        ],
+        "referenceTaskIds": null,
+        "role": "user",
+        "taskId": null
+      },
+      {
+        "contextId": "4ab8c26e-2e33-46c6-8130-eb1488c92116",
+        "extensions": null,
+        "kind": "message",
+        "messageId": "4bf0ae17-f901-4f82-b5be-21f7c19ed785",
+        "metadata": null,
+        "parts": [
+          {
+            "kind": "text",
+            "metadata": null,
+            "text": "That's an easy one! 2 + 7 = 9."
+          }
+        ],
+        "referenceTaskIds": null,
+        "role": "agent",
+        "taskId": null
+      }
+    ]
+  },
+  {
+    "conversation_id": "39a12297-a9e1-45ec-a3e9-2f9cc4e1e72d",
+    "is_active": true,
+    "name": "",
+    "task_ids": [],
+    "messages": [
+      {
+        "contextId": "39a12297-a9e1-45ec-a3e9-2f9cc4e1e72d",
+        "extensions": null,
+        "kind": "message",
+        "messageId": "e4ecf633-7826-4780-89b0-d46f34544b15",
+        "metadata": null,
+        "parts": [
+          {
+            "kind": "text",
+            "metadata": null,
+            "text": "\"query\": \"What is the capital of France?\", \"response\": \"The capital of France is Paris.\", \"description\": \"Perfect Factual Answer\""
+          }
+        ],
+        "referenceTaskIds": null,
+        "role": "user",
+        "taskId": null
+      },
+      {
+        "contextId": "39a12297-a9e1-45ec-a3e9-2f9cc4e1e72d",
+        "extensions": null,
+        "kind": "message",
+        "messageId": "b091f358-81bf-43b4-9819-8841ac5b4c88",
+        "metadata": null,
+        "parts": [
+          {
+            "kind": "text",
+            "metadata": null,
+            "text": "I have sent the query to the Agent Judge."
+          }
+        ],
+        "referenceTaskIds": null,
+        "role": "agent",
+        "taskId": "bf4c7301-e668-44b7-9fa1-07983deef764"
+      },
+      {
+        "contextId": "39a12297-a9e1-45ec-a3e9-2f9cc4e1e72d",
+        "extensions": null,
+        "kind": "message",
+        "messageId": "ea145f7b-4f61-4720-b8b2-918259b6a227",
+        "metadata": null,
+        "parts": [
+          {
+            "kind": "text",
+            "metadata": null,
+            "text": "query\": \"What is the capital of France?\", \"response\": \"The capital of France is Paris.\", \"description\": \"Perfect Factual Answer\""
+          }
+        ],
+        "referenceTaskIds": null,
+        "role": "user",
+        "taskId": null
+      },
+      {
+        "contextId": "39a12297-a9e1-45ec-a3e9-2f9cc4e1e72d",
+        "extensions": null,
+        "kind": "message",
+        "messageId": "55cbfcdb-d92c-41e3-99c6-7e7ea4e6f85d",
+        "metadata": null,
+        "parts": [
+          {
+            "kind": "text",
+            "metadata": null,
+            "text": "Agent Judge: Thanks for the input! I will evaluate the provided response."
+          }
+        ],
+        "referenceTaskIds": null,
+        "role": "agent",
+        "taskId": "555355f0-5465-4487-b8fb-d6c16b4fd681"
+      }
+    ]
+  },
+  {
+    "conversation_id": "4d7b10a6-3651-4512-ad05-4d36bfa4846d",
+    "is_active": true,
+    "name": "",
+    "task_ids": [],
+    "messages": [
+      {
+        "contextId": "4d7b10a6-3651-4512-ad05-4d36bfa4846d",
+        "extensions": null,
+        "kind": "message",
+        "messageId": "b2e1d24a-9214-4772-8496-16f639d88356",
+        "metadata": null,
+        "parts": [
+          {
+            "kind": "text",
+            "metadata": null,
+            "text": "hi"
+          }
+        ],
+        "referenceTaskIds": null,
+        "role": "user",
+        "taskId": null
+      },
+      {
+        "contextId": "4d7b10a6-3651-4512-ad05-4d36bfa4846d",
+        "extensions": null,
+        "kind": "message",
+        "messageId": "5abc0c22-ca19-4b89-b2d4-b9bc11b7de02",
+        "metadata": null,
+        "parts": [
+          {
+            "kind": "text",
+            "metadata": null,
+            "text": "Hello! I'm a host agent. I can delegate tasks to other agents. How can I help you today?\n"
+          }
+        ],
+        "referenceTaskIds": null,
+        "role": "agent",
+        "taskId": null
+      }
+    ]
+  },
+  {
+    "conversation_id": "eafceb9a-2f56-4f6d-a7a1-bc4e1e647781",
+    "is_active": true,
+    "name": "",
+    "task_ids": [],
+    "messages": []
+  },
+  {
+    "conversation_id": "173e8fd9-03d0-443c-afd3-98e4c3dd7efa",
+    "is_active": true,
+    "name": "",
+    "task_ids": [],
+    "messages": []
+  },
+  {
+    "conversation_id": "7e9ff00f-2b15-4412-a94b-d7b139d37d9b",
+    "is_active": true,
+    "name": "",
+    "task_ids": [],
+    "messages": [
+      {
+        "contextId": "7e9ff00f-2b15-4412-a94b-d7b139d37d9b",
+        "extensions": null,
+        "kind": "message",
+        "messageId": "7c2f34b5-f312-44ce-b986-c234049e3153",
+        "metadata": null,
+        "parts": [
+          {
+            "kind": "text",
+            "metadata": null,
+            "text": "Provide me the list of materials in plant 3010."
+          }
+        ],
+        "referenceTaskIds": null,
+        "role": "user",
+        "taskId": null
+      }
+    ]
+  },
+  {
+    "conversation_id": "16434930-aaa3-43ab-b8d1-1d7ccd1476de",
+    "is_active": true,
+    "name": "",
+    "task_ids": [],
+    "messages": [
+      {
+        "contextId": "16434930-aaa3-43ab-b8d1-1d7ccd1476de",
+        "extensions": null,
+        "kind": "message",
+        "messageId": "9a4c24f1-e76b-44e5-9544-192ac4597a56",
+        "metadata": null,
+        "parts": [
+          {
+            "kind": "text",
+            "metadata": null,
+            "text": "Provide me the list of plants."
+          }
+        ],
+        "referenceTaskIds": null,
+        "role": "user",
+        "taskId": null
+      },
+      {
+        "contextId": "16434930-aaa3-43ab-b8d1-1d7ccd1476de",
+        "extensions": null,
+        "kind": "message",
+        "messageId": "86836ce8-757e-4fe0-92a7-8e0a52870f1e",
+        "metadata": null,
+        "parts": [
+          {
+            "kind": "text",
+            "metadata": null,
+            "text": "I'll need to ask the CSC Agent for that information. What exactly about the plants would you like to know? For example, are you looking for plant details, costing data, or something else?"
+          }
+        ],
+        "referenceTaskIds": null,
+        "role": "agent",
+        "taskId": null
+      }
+    ]
+  }
+]

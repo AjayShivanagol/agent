@@ -1,0 +1,44 @@
+[
+  {
+    "conversation_id": "636d559b-bca1-4a5f-ac5c-7fbd5f0a8713",
+    "is_active": true,
+    "name": "",
+    "task_ids": [],
+    "messages": [
+      {
+        "contextId": "636d559b-bca1-4a5f-ac5c-7fbd5f0a8713",
+        "extensions": null,
+        "kind": "message",
+        "messageId": "e6b2b42e-25fb-4bf2-90b3-18168a14d11d",
+        "metadata": null,
+        "parts": [
+          {
+            "kind": "text",
+            "metadata": null,
+            "text": "\"query\": \"What is the capital of France?\", \"response\": \"The capital of France is Paris.\", \"description\": \"Perfect Factual Answer\""
+          }
+        ],
+        "referenceTaskIds": null,
+        "role": "user",
+        "taskId": null
+      },
+      {
+        "contextId": "636d559b-bca1-4a5f-ac5c-7fbd5f0a8713",
+        "extensions": null,
+        "kind": "message",
+        "messageId": "3f0e8171-209b-4bb3-b7d6-5edfb610c7a2",
+        "metadata": null,
+        "parts": [
+          {
+            "kind": "text",
+            "metadata": null,
+            "text": "I've sent your request to the Agent Judge for evaluation."
+          }
+        ],
+        "referenceTaskIds": null,
+        "role": "agent",
+        "taskId": "e6edb092-f1d6-4559-ac88-ac1276ec6144"
+      }
+    ]
+  }
+]

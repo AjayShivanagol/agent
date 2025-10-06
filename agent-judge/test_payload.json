@@ -1,0 +1,19 @@
+{
+  "jsonrpc": "2.0",
+  "method": "sendMessage",
+  "params": {
+    "message": {
+      "messageId": "test-123",
+      "role": "user",
+      "parts": [
+        {
+          "text": "What is the capital of France?|||The capital of France is Paris. It is located in the northern part of the country."
+        }
+      ]
+    },
+    "configuration": {
+      "acceptedOutputModes": ["text"]
+    }
+  },
+  "id": "request-123"
+}

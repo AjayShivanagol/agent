@@ -1,0 +1,23 @@
+# Ignore conversation and agent data files to avoid shipping local test/dev data or secrets
+data/agents.json
+data/conversations.json
+
+# Optional: ignore virtual env and caches
+.venv/
+__pycache__/# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+
+# Docker
+.dockerignore
+Dockerfile
+Containerfile
+
+# Environment files
+.env

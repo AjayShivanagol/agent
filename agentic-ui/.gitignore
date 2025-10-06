@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+.venv312/
+
+# Environment files
+.env
+data/agents.json
+data/conversations.json

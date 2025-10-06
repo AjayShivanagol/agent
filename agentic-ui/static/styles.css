@@ -1,0 +1,56 @@
+/* Global Mercedes-Benz font setup */
+
+/* 1) Use the fonts already present under /static */
+/* Regular */
+@font-face {
+  font-family: 'DaimlerCS';
+  src: url('/DaimlerCS-Regular-_cZGO.woff2') format('woff2'),
+       url('/DaimlerCS-Regular-UnwCf.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+/* Demi (Semibold) */
+@font-face {
+  font-family: 'DaimlerCS';
+  src: url('/DaimlerCS-Demi-370c7.woff2') format('woff2'),
+       url('/DaimlerCS-Demi-3HQAr.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 2) Apply globally */
+:root, html, body {
+  font-family: 'DaimlerCS', 'MBCorpoATitle', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Ensure common controls inherit */
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+/* Optional: slightly better font smoothing */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- Mesop/Material input underline (line ripple) color overrides --- */
+/* Default (light mode): use rgb(0,120,214) */
+.mdc-text-field .mdc-line-ripple,
+.mdc-line-ripple,
+.mdc-line-ripple--active,
+.mdc-text-field--focused .mdc-line-ripple--active {
+  background-color: rgb(0, 120, 214) !important;
+}
+
+/* Dark mode: switch to rgb(0,141,252) */
+@media (prefers-color-scheme: dark) {
+  .mdc-text-field .mdc-line-ripple,
+  .mdc-line-ripple,
+  .mdc-line-ripple--active,
+  .mdc-text-field--focused .mdc-line-ripple--active {
+    background-color: rgb(0, 141, 252) !important;
+  }
+}
