@@ -699,24 +699,92 @@ class AgentJudge:
                 recommendations="Please retry with proper agent setup"
             )
     
+    def _extract_query_and_response(
+        self, user_input: str
+    ) -> tuple[Optional[str], Optional[str]]:
+        """Return the query/response pair from supported input variants."""
+
+        if not user_input:
+            return None, None
+
+        payload = user_input.strip()
+        if not payload:
+            return None, None
+
+        if "|||" in payload:
+            left, right = payload.split("|||", 1)
+            return left.strip() or None, right.strip() or None
+
+        def _strip_wrapping_quotes(text: str) -> str:
+            if len(text) >= 2 and text[0] == text[-1] and text[0] in {'"', "'"}:
+                return text[1:-1]
+            return text
+
+        query_label_pattern = re.compile(
+            r"(?:(?:user\s*)?query|question|prompt)\s*[:\-]",
+            flags=re.IGNORECASE,
+        )
+        response_label_pattern = re.compile(
+            r"(?:agent\s*)?(?:re\w+|ans\w+|reply|output|result)\s*[:\-]",
+            flags=re.IGNORECASE,
+        )
+
+        query_label_match = query_label_pattern.search(payload)
+        if query_label_match:
+            response_label_match = response_label_pattern.search(
+                payload, query_label_match.end()
+            )
+            if response_label_match:
+                query_text = payload[
+                    query_label_match.end() : response_label_match.start()
+                ]
+                response_text = payload[response_label_match.end() :]
+
+                query_text = _strip_wrapping_quotes(query_text.strip().rstrip(",;"))
+                response_text = _strip_wrapping_quotes(
+                    response_text.strip().lstrip(",;-")
+                )
+
+                if query_text and response_text:
+                    return query_text, response_text
+
+        # Fallback: if we spot a "query" label but the response label is misspelled,
+        # try splitting on the final colon and treat everything before it as the
+        # query section.
+        if re.search(r"query\s*[:\-]", payload, flags=re.IGNORECASE):
+            parts = re.split(r"query\s*[:\-]\s*", payload, maxsplit=1, flags=re.IGNORECASE)
+            if len(parts) == 2:
+                remainder = parts[1]
+                colon_index = remainder.rfind(":")
+                if colon_index != -1:
+                    query_candidate = remainder[:colon_index].strip().rstrip(",;")
+                    response_candidate = remainder[colon_index + 1 :].strip()
+                    query_candidate = _strip_wrapping_quotes(
+                        re.sub(r"[\s\-]*$", "", query_candidate)
+                    )
+                    response_candidate = _strip_wrapping_quotes(
+                        response_candidate.lstrip(",;-")
+                    )
+                    if query_candidate and response_candidate:
+                        return query_candidate, response_candidate
+
+        return None, None
+
     def get_agent_response(self, user_input: str, conversation_id: str = "default") -> Dict[str, Any]:
         """
         Main interface method for A2A integration using G-EVAL methodology.
         Expects input in format: "USER_QUERY|||AGENT_RESPONSE"
         """
         try:
-            # Parse input format
-            if "|||" in user_input:
-                parts = user_input.split("|||", 1)
-                user_query = parts[0].strip()
-                agent_response = parts[1].strip()
-            else:
+            user_query, agent_response = self._extract_query_and_response(user_input)
+
+            if not user_query or not agent_response:
                 return {
                     'is_task_complete': True,
                     'require_user_input': False,
                     'content': 'Invalid input format. Please use: USER_QUERY|||AGENT_RESPONSE'
                 }
-            
+
             # Evaluate using G-EVAL methodology
             evaluation = self.evaluate(user_query, agent_response)
             

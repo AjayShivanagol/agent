@@ -61,12 +61,31 @@ class TestAgentJudge:
     def test_get_agent_response_valid_format(self):
         """Test agent response method with valid input format."""
         valid_input = "What is 2+2?|||2+2 equals 4."
-        
+
         result = self.judge.get_agent_response(valid_input)
-        
+
         assert 'is_task_complete' in result
         assert 'content' in result
         assert isinstance(result['content'], str)
+
+    @pytest.mark.parametrize(
+        "labelled_input",
+        [
+            "query: What is 2+2? response: It equals 4.",
+            "Question - What is 2+2? Agent response - It equals 4.",
+            "User query: What is 2+2? Answer: It equals 4.",
+            "query: What is 2+2? reposnse: It equals 4.",
+            "prompt: What is 2+2? reply: It equals 4.",
+            "Evaluate the following: query: \"what is 2+2 ?\", response: \"6\"",
+        ],
+    )
+    def test_get_agent_response_query_response_format(self, labelled_input):
+        """Test agent response method with query/response labelled input."""
+
+        result = self.judge.get_agent_response(labelled_input)
+
+        assert result['is_task_complete'] is True
+        assert 'EVALUATION RESULT' in result['content']
 
     def test_empty_response_evaluation(self):
         """Test evaluation of empty agent response."""

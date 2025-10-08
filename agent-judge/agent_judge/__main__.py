@@ -52,6 +52,7 @@ def main(host, port):
             text_generation=True,
             structured_output=True,
             function_calling=True,
+            streaming=True,
         )
         logger.info(f"Agent capabilities: {capabilities}")
 
